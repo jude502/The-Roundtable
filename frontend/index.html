@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Roundtable</title>
+<link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settings-overlay" onclick="closeSettings()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title">API Keys</div>
+      <button class="modal-close" onclick="closeSettings()">✕</button>
+    </div>
+    <p class="modal-sub">Keys are saved to your local .env file and never leave your machine.</p>
+
+    <div class="key-group">
+      <div class="key-label">
+        <span class="key-dot" style="background:#8b5cf6"></span>
+        Anthropic (Claude)
+      </div>
+      <input class="key-input" type="password" id="key-anthropic" placeholder="sk-ant-..."/>
+    </div>
+    <div class="key-group">
+      <div class="key-label">
+        <span class="key-dot" style="background:#10b981"></span>
+        OpenAI (GPT-4o)
+      </div>
+      <input class="key-input" type="password" id="key-openai" placeholder="sk-..."/>
+    </div>
+    <div class="key-group">
+      <div class="key-label">
+        <span class="key-dot" style="background:#3b82f6"></span>
+        Google (Gemini)
+      </div>
+      <input class="key-input" type="password" id="key-google" placeholder="AIza..."/>
+    </div>
+    <div class="key-group">
+      <div class="key-label">
+        <span class="key-dot" style="background:#f59e0b"></span>
+        xAI (Grok)
+      </div>
+      <input class="key-input" type="password" id="key-xai" placeholder="xai-..."/>
+    </div>
+    <div class="key-group">
+      <div class="key-label">
+        <span class="key-dot" style="background:#e5e7eb"></span>
+        Groq (Llama 3.3)
+      </div>
+      <input class="key-input" type="password" id="key-groq" placeholder="gsk_..."/>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeSettings()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Save Keys</button>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header" id="header-drag">
+  <div class="header-left">
+    <div class="logo">The Roundtable</div>
+    <div class="logo-sub">Multi-model AI debate</div>
+  </div>
+  <button class="settings-btn" onclick="openSettings()" title="API Keys">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+    </svg>
+    Settings
+  </button>
+</header>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Setup panel -->
+  <div class="setup-panel" id="setup-panel">
+    <div class="setup-inner">
+
+      <div class="setup-title">Ask anything.</div>
+      <div class="setup-sub">Pick your participants, set the rounds, let them debate.</div>
+
+      <textarea
+        class="question-input"
+        id="question"
+        placeholder="Do photons have gravity?"
+        rows="3"
+        onkeydown="handleKey(event)"
+      ></textarea>
+
+      <div class="options-row">
+        <div class="model-selector" id="model-selector">
+          <!-- populated by JS -->
+        </div>
+
+        <div class="rounds-selector">
+          <div class="rounds-label">Rounds</div>
+          <div class="rounds-btns">
+            <button class="round-btn active" data-rounds="1" onclick="setRounds(1)">1</button>
+            <button class="round-btn" data-rounds="2" onclick="setRounds(2)">2</button>
+            <button class="round-btn" data-rounds="3" onclick="setRounds(3)">3</button>
+            <button class="round-btn" data-rounds="5" onclick="setRounds(5)">5</button>
+            <button class="round-btn" data-rounds="8" onclick="setRounds(8)">8</button>
+            <button class="round-btn" data-rounds="12" onclick="setRounds(12)">12</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="setup-footer">
+        <button class="btn btn-start" id="start-btn" onclick="startDebate()">
+          Start Debate
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+
+        <label class="thinking-toggle" title="Show Claude's raw reasoning before its response">
+          <input type="checkbox" id="show-thinking" onchange="updateCostHint()"/>
+          <span class="thinking-toggle-ui"></span>
+          <span class="thinking-label">Show Thinking</span>
+          <span class="thinking-badge">Claude only</span>
+        </label>
+
+        <div class="cost-hint" id="cost-hint"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Debate view -->
+  <div class="debate-view" id="debate-view" style="display:none">
+
+    <div class="debate-header">
+      <div class="debate-question" id="debate-question"></div>
+      <button class="btn btn-ghost btn-sm" onclick="resetDebate()">← New Question</button>
+    </div>
+
+    <div class="rounds-container" id="rounds-container"></div>
+
+    <div class="debate-status" id="debate-status"></div>
+
+  </div>
+
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

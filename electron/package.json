@@ -1,0 +1,12 @@
+{
+  "name": "the-roundtable",
+  "version": "1.0.0",
+  "description": "Multi-model AI debate platform",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^34.0.0"
+  }
+}
